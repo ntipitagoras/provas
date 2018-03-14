@@ -84,4 +84,14 @@ class Usuario_model extends CI_Model {
         $this->db->update('usuario', $dados);
 	}
 
+	public function updateDados($cpf, $dados){
+
+		$this->db->where('cpf', $cpf);
+        if ($this->db->update('usuario', $dados)) {
+        	return true;
+        }else{
+        	return false;
+        }
+	}
+
 }

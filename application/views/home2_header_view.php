@@ -196,7 +196,11 @@
 												echo "<ul class='nav nav-second-level'>";
 													echo "<li><a href='".base_url()."configuracao/dadosProfessor'> &nbsp;Acadêmico</a></li>";
 													echo "<li><a href='".base_url()."configuracao/envioDocumento'> &nbsp;Documentos </a></li>";
+
+													echo "<li><a href='".base_url()."usuarios/index'><i class='fa fa-user'></i> &nbsp;Usuários</a></li>";
+										
 												echo "</ul>";
+
 											echo "</li>";
 
 
@@ -222,6 +226,7 @@
 													echo "<li><a href='".base_url()."configuracao/gerarPlanilhaExcel'>&nbsp;Gerar Arquivo</a></li>";
 												echo "</ul>";
 										echo "</li>";
+
 
 									}
 
@@ -260,6 +265,10 @@
 										echo "<li>";
 											echo "<a href='".base_url()."impressao/index'><i class='fa fa-print'></i> &nbsp;Impressão de Provas</a>";
 										echo "</li>";
+										echo "<li>";
+										echo "<a href='".base_url()."usuarios/index'><i class='fa fa-user'></i> &nbsp;Usuários</a>";
+										echo "</li>";
+
 									}
 
 									if( $nivel_regulatorio == 1 )
