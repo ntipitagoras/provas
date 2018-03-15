@@ -1,220 +1,110 @@
 
-<div class="container">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<div id="page-wrapper">
     <div class="row">
-        <div class="col-md-12">
-        
+        <div class="col-sm-4">
+          <h4>Provas enviadas</h4>
+           <canvas id="usuariosGrafic" width="400" height="400"></canvas>
+   <script>
+          var data = {
+              labels: ['Enviadas', 'Aprovadas', 'Rejeitadas'],
+              datasets: [
+                {
+                  data: [<?php echo $enviadas ?>, <?php echo $aceitas ?>,<?php echo $rejeitadas ?>],
+                  backgroundColor: ['#ffa726', '#26a69a', '#7e57c2'],
+                  hoverBackgroundColor: ['#ffb74d', '#4db6ac', '#9575cd']
+                }
+              ]
+          };
+          var ctx = document.getElementById("usuariosGrafic");
+          var myDoughnutChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+            }
+          });
+    </script> 
+  
+   <script type="text/javascript">
 
-          	<div class="panel panel-primary">
-            	<div class="panel-heading">Disponibilidade dos Professores</div>
-              		<div class="panel-body">
-                		<p><font color=red><?=@$this->session->flashdata('msg');?></font></p> 
+$(function(){      //inicializa jQuery
+   $('.load_cursos').submit(function(){    //nome do form no evento submit identificado por class
+      $.ajax({
+         url: 'relatorio/getDetails',
+         type: 'POST',
+         dataType: 'json',
+         data: $('.load_cursos').serialize(),
 
-	                    <h4>  
-	                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-	                    Lista de Professores
-	                    </h4>
+         success: function( data ){ 
+                        //Se o resultado for sucesso
+            var data2 = {
+              labels: ['Enviadas', 'Aprovadas', 'Rejeitadas'],
+              datasets: [
+                {
+                  data :[data.curso_enviados, data.cursos_aceitos
+, data.cursos_rejeitado],
+                  backgroundColor: ['#ffa726', '#26a69a', '#7e57c2'],
+                  hoverBackgroundColor: ['#ffb74d', '#4db6ac', '#9575cd']
+                }
+              ]
+             
+          };
+          var ctx = document.getElementById("cursosGrafic");
+          var myDoughnutChart = new Chart(ctx, {
+            type: 'pie',
+            data: data2,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+            }
+          });           
+         },
+         beforeSend: function(){       //Evento que será executado antes de enviar os dados com o ajax
+            $("#btn_curso").attr('value', 'Buscando');   // Renomear butão enquanto estiver enviando
+        },
+        complete: function(msg){     //Evento que será executado após finalizar a solicitação ajax
+            $("#btn_curso").attr('value', 'Buscar');  //renomear botão           
+        }
+      });
+    return false; //não recarregar a página
+   });
+});
+</script> 
+    
 
-
-                		<?php 
-                		echo "<div class='list-group'>";
-                		$i = 0;
-                		foreach( $disponibilidades as $d)
-                		{
-                            $i++;
-							  echo "<a href='" .$d->id.  "' class='list-group-item' data-toggle='modal' data-target='#basicModalA" .$d->id. "' >" .strtoupper($d->nome). " <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'>";
-
-                                    if($d->titulacao_professor == 1){echo "Graduado";}else{echo "";};
-                                    if($d->titulacao_professor == 2){echo "Especialista";}else{echo "";};
-                                    if($d->titulacao_professor == 3){echo "Mestrado";}else{echo "";};
-                                    if($d->titulacao_professor == 4){echo "Doutorado";}else{echo "";};
-                                    if($d->titulacao_professor == 5){echo "Pós-Doutorado";}else{echo "";};
-
-
-                              echo"</a> ";
-							  //echo "<br>";
-                        
-                		?>
-
-                		<!-- INICIO DO MODAL -->
-                         <div class="modal fade" id="basicModalA<?php echo $d->id; ?>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h5 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><b>  <?=$d->nome?></b></h5>
-
-                                  </div>
-
-                                  <div class="modal-body">
-                                    
-                                    <span class="badge">Fama</span>
-
-                                    <table border='1' cellpadding="" cellspacing="0" width="75%" align="center">
-
-                                    	<tr>
-                                            <td rowspan="2" valign="middle" align="center">Matutino</td>
-                                    		<td align="center">Segunda</td>
-                                    		<td align="center">Terça</td>
-                                    		<td align="center">Quarta</td>
-                                    		<td align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->fmsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fmterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fmquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fmquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fmsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-
-                                    	<tr>
-                                            <td rowspan="2"  valign="middle" align="center">Vespertino</td>
-                                    		<td  align="center">Segunda</td>
-                                    		<td  align="center">Terça</td>
-                                    		<td  align="center">Quarta</td>
-                                    		<td  align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->fvsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fvterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fvquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fvquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fvsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-
-                                    	<tr>
-                                            <td rowspan="2" valign="middle" align="center">Noturno</td>
-                                    		<td  align="center">Segunda</td>
-                                    		<td  align="center">Terça</td>
-                                    		<td  align="center">Quarta</td>
-                                    		<td  align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->fnsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fnterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fnquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fnquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->fnsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-                                    	
-
-                                    </table>
-
-
-                                    <span class="badge">Pitágoras</span>
-                                    
-                                    <table border="1" cellpadding="0" cellspacing="0" width="75%" align="center">
-                                    	
-                                    	<tr>
-                                            <td rowspan="2" valign="middle" align="center">Matutino</td>
-                                    		<td  align="center">Segunda</td>
-                                    		<td  align="center">Terça</td>
-                                    		<td  align="center">Quarta</td>
-                                    		<td  align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->pmsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pmterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pmquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pmquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pmsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-
-                                    	<tr>
-                                            <td rowspan="2" valign="middle" align="center">Vespertino</td>
-                                    		<td  align="center">Segunda</td>
-                                    		<td  align="center">Terça</td>
-                                    		<td  align="center">Quarta</td>
-                                    		<td  align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->pvsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pvterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pvquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pvquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pvsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-
-                                    	<tr>
-                                            <td rowspan="2" valign="middle" align="center">Noturno</td>
-                                    		<td  align="center">Segunda</td>
-                                    		<td  align="center">Terça</td>
-                                    		<td  align="center">Quarta</td>
-                                    		<td  align="center">Quinta</td>
-                                    		<td  align="center">Sexta</td>
-                                    	</tr>
-
-                                    	<tr>
-                                    		<td  align="center"><center><?php if($d->pnsegunda == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pnterca == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pnquarta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pnquinta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    		<td  align="center"><center><?php if($d->pnsexta == 'on'){ echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';}else{ echo "<span class='badge'> - </span>";}?></center></td>
-                                    	</tr>
-                                    	
-
-                                    </table>
-
-
-                                    <h6>
-                                    <span class="badge">Disciplinas:</span>
-                                    
-                                        <?php
-                                            if($d->disciplina_leciona){echo $d->disciplina_leciona;}else{echo "";};
-                                        ?>
-
-                                    </h6>
-
-
-                                    <h6>
-                                    <span class="badge">Titulação:</span>
-                                    
-                                        <?php
-
-                                            if($d->titulacao_professor == 1){echo "Graduado";}else{echo "";};
-                                            if($d->titulacao_professor == 2){echo "Especialista";}else{echo "";};
-                                            if($d->titulacao_professor == 3){echo "Mestrado";}else{echo "";};
-                                            if($d->titulacao_professor == 4){echo "Doutorado";}else{echo "";};
-                                            if($d->titulacao_professor == 5){echo "Pós-Doutorado";}else{echo "";};
-                                        ?>
-
-                                    </h6>
-
-
-                                  </div>
-                                    
-                                    
-                                  <!--<div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Sair</button>
-                                    <a href="aceita/<?php //echo $d->id; ?>" class="btn btn-success"></a>
-                                  </div>-->
-                                </div>
-                              </div>
-                            </div>
-
-                        <!-- FIM MODAL -->
-                	
-                        <?php
-                        	}                			
-                			echo "</div>";
-
-                            echo "<b>Total :</b> " . $i++ . " disponibilidades enviadas de um total de 444 professores";    
-                		?>
-
-            		</div>    
-
-
-
-           	</div>
         </div>
+
+         <div class="col-sm-4">
+
+
+
+ <h4>Detalhes por curso</h4>
+ <form class="load_cursos" action="" method="POST">
+ <select class="form-control" name="cursos" id="cursos">
+  <option value="" selected="">Selecione o curso</option>
+   <?php foreach ($cursos as $curso) {
+echo "<option value='".$curso->id."'>".$curso->descricao."</option>";
+     
+   }?>
+</select>
+
+ <input type="submit" class="btn-success" value="Buscar" name="btn_curso" id="btn_curso">
+
+</form>
+<canvas id="cursosGrafic" width="400" height="400"></canvas>
+
+
+
+ <script>
+          
+  </script> 
+
+
+
+         </div>
     </div>
 </div>
+
+

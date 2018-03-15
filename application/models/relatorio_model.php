@@ -2,21 +2,35 @@
 
 class Relatorio_model extends CI_Model {
 
-	var $id;
 	
 
     function __construct(){
         parent::__construct();
     }
 
-    public function lista(){
+    public function totalProvasEnviadas(){
 
-    	$this->db->select('	*, a.id_professor as id, b.nome as nome ');
-		$this->db->from('disponibilidade a ');   				
-		$this->db->join('usuario b', 'b.id = a.id_professor','inner');
-		$this->db->order_by('b.nome','ASC');
-        return $this->db->get()->result();
+    	$this->db->select('*');
+    	$this->db->where('id_status',1);
+		$this->db->from('prova');   				
+        return count($this->db->get()->result());
     }
+    public function totalProvasAceitas(){
+
+    	$this->db->select('*');
+    	$this->db->where('id_status',2);
+		$this->db->from('prova');   				
+        return count($this->db->get()->result());
+    }
+    public function totalProvasRejeitadas(){
+
+    	$this->db->select('id_status');
+    	$this->db->where('id_status',3);
+		$this->db->from('prova');   				
+        return count($this->db->get()->result());
+    }
+
+
 	function aceite($id){
 		$dataHoraCoordenador = date("Y-m-d h:i:s");
 		$data =  array('id_status' => 2, 'datahora_coordenador' => $dataHoraCoordenador);
@@ -25,12 +39,44 @@ class Relatorio_model extends CI_Model {
 		return $this->db->update('prova',$data);
 	}
 
-	function rejeita($id,$motivo){
+function getAllCursos(){
 
-		$dataHoraCoordenador = date("Y-m-d h:i:s");
-		$data =  array('id_status' => 3, 'datahora_coordenador' => $dataHoraCoordenador,'motivo' => $motivo);		
-		$this->db->where('id',$id);
-		return $this->db->update('prova', $data);
-	}
+$this->db->select('id, descricao');
+$this->db->from('curso');
+return $this->db->get()->result();
+
+}
+
+function getCurseEnviados($id){
+
+$this->db->select('*');
+$this->db->where('id_status',1);
+$this->db->where('id_curso',$id);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+
+}
+
+function getCurseAceitos($id){
+
+$this->db->select('*');
+$this->db->where('id_status',2);
+$this->db->where('id_curso',$id);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+
+}
+
+function getCurseRejeitados($id){
+
+$this->db->select('*');
+$this->db->where('id_status',3);
+$this->db->where('id_curso',$id);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+}
 
 }

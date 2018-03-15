@@ -10,6 +10,7 @@ class Usuarios extends CI_Controller {
 				redirect ("home");
 			}
 			$this->load->model('usuario_model','usuario');
+			$this->load->helper('gerarlogs_helper');
 			$this->load->library('encrypt');
 		}
 
@@ -52,6 +53,9 @@ class Usuarios extends CI_Controller {
 
         $salvar = $this->usuario->updateDados($cpf, $dados);
         if ($salvar=true) {
+        
+        gravarLogs($this->session->userdata('id_professor'),$this->session->userdata('nome'), $this->session->userdata('nivel_professor'), $this->session->userdata('nivel_coordenador') , $this->session->userdata('nivel_operador'),  $this->session->userdata('nivel_tercerizado'), $this->session->userdata('nivel_administrador')  , 'Alteração de dados usuário: '.$cpf);
+
         	$this->session->set_flashdata('msg', "Dados atualizados com sucesso");
         	redirect(base_url('/usuarios'));
         }else{
