@@ -49,12 +49,19 @@
 		echo "</div>";
 
 		?>
-
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+  //  var table = $('#table').DataTable();
+ 
+    
+} );
+</script>
 		<?php
 
 		if( isset($provas) )
 		{
-			echo "<table class='table table-striped table-bordered' cellspacing='0' width='100%'>";
+			echo "<table id='table' class='table  table-striped table-bordered' cellspacing='0' width='100%'>";
 				echo "<thead>";
 					echo "<tr>";
 						echo "<th><b>Curso</b></th>";
@@ -68,6 +75,7 @@
 						echo "<th><b>Tipo</b></th>";
 						echo "<th><b>Dt. Prof.</b></th>";
 						echo "<th><b>Dt. Coord.</b></th>";
+						echo "<th><b>Impresso</b></th>";
 					echo "</tr>";
 				echo "</thead>";
 				/*echo "<tfoot>";
@@ -124,8 +132,8 @@
 				<input type="hidden" name="id" id="id" value="<?php echo $prova->id; ?>">
 				<textarea  rows="5" cols="60" name="motivo" id="motivo"></textarea>
 				<br><br>
-				<button type="button" class="btn btn-danger" data-dismiss="modal">NÃO</button>
-				<input type="submit" value="SIM" class="btn btn-success">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+				<input type="submit" value="Salvar" class="btn btn-success">
 				</form>
 
 				</div>
@@ -149,19 +157,7 @@
 					echo "<td align='center'><h6>".$prova->periodo."</h6></td>";
 					echo "<td align='center'><h6>".$prova->qtdalunos."</h6></td>";
 
-					//STATUS IMPRESSAO
-					if( $prova->id_status_impressao == 4)
-					{
-						//echo "<td align='center'><span class='label label-success'>SIM</span></td>";
-					}
-					if( $prova->id_status_impressao == 5)
-					{
-						//echo "<td align='center'><span class='label label-danger'>NÃO</span></td>";
-					}
-					if( $prova->id_status_impressao == 0 )
-					{
-						//echo "<td align='center'>-</td>";
-					}
+					
 
 					//PROVAS ENVIADAS
 					if( count($prova->totalarquivos) > 0  and $prova->path )
@@ -230,7 +226,21 @@
 					{
 						echo "<td align='center'> - </td>";
 					}
-
+					
+					//STATUS IMPRESSÃO
+                    if( $prova->id_status_impressao == 0)
+					{
+						echo "<td align='center'><h6><button type=button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#basicModalN".$prova->id."'>Não</button><button type=button class='btn btn-success btn-sm' data-toggle='modal' data-target='#basicModalS".$prova->id."'>Sim</button></h6></td>";
+					}
+					if ($prova->id_status_impressao == 4) {
+						echo "<td align='center'><span class='label label-success'>SIM</span></td>";
+					}
+					if( $prova->id_status_impressao == 5)
+					{
+						echo "<td align='center'><span class='label label-danger'>NÃO</span></td>";
+					}
+					
+                   
 					echo "</tr>";
 
 					}
