@@ -20,8 +20,8 @@ class Token extends CI_Controller {
 
 
  $celular = $this->session->userdata('celular');
- if ($celular==NULL) {
- 	echo "<script>alert('Nenhum número de celular cadastrado, favor procurar a TI para atualizar os dados');window.location='home';</script>";
+ if ($celular==NULL || strlen($celular)!=11) {
+ 	echo "<script>alert('Nenhum número de celular cadastrado ou número incorreto, favor procurar o coordenador para atualizar os dados');window.location='home';</script>";
 
  }
 
@@ -43,8 +43,8 @@ $pin_sms .= rand(1,9);//sorteia 1 numero de 0 a 9
 }
 $pin_codificado = $this->encrypt->encode($pin_sms);
 setcookie("token_sms", $pin_codificado, time()+120);
-echo $pin_sms;
-//sendsms($pin_sms, $celular);
+//echo $pin_sms;
+sendsms($pin_sms, $celular);
 }
 
 

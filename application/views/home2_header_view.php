@@ -200,6 +200,8 @@
 										
 												echo "</ul>";
 
+												echo "<li><a href='".base_url()."relatorio/index'><i class='fa fa-bar-chart-o'></i> &nbsp;Relatório</a></li>";
+
 											echo "</li>";
 
 

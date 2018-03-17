@@ -51,17 +51,22 @@ echo "<option value='".$curso->id."'>".$curso->descricao."</option>";
 <div class="col-sm-4">
 <h4>Provas impressas</h4>
 <ul class="list-group list-group-flush">
-<li class="list-group-item">
+ <li class="list-group-item">
 <canvas id="provasGrafic" width="50" height="37"></canvas>
  </li>
+<li class="list-group-item">
+ <canvas id="provasGrafic2" width="50" height="30"></canvas>
+</li> 
+
 </ul> 
 </div>
 
 
-         </div>
+    </div>
     </div>
   
 </div>
+
 
 
 
@@ -85,7 +90,17 @@ echo "<option value='".$curso->id."'>".$curso->descricao."</option>";
                 maintainAspectRatio: true,
             }
           });
-    </script> 
+
+           var ctx = document.getElementById("totalGrafic");
+           var myBarChart = new Chart(ctx, {
+             type: 'bar',
+             data: data,
+             options: {
+             responsive: true,
+             maintainAspectRatio: true,        
+             }
+          });
+</script> 
   
 <script type="text/javascript">
 
@@ -161,39 +176,13 @@ $(function(){      //inicializa jQuery
 });
 </script>
 
-<script type="text/javascript">
-
-var dataTot = {
-              labels: ['Enviadas', 'Aprovadas', 'Rejeitadas'],
-              datasets: [
-                {
-              data :[<?php echo $enviadas ?>, <?php echo $aceitas ?>,<?php echo $rejeitadas ?>],
-                  backgroundColor: ['#ffa726', '#26a69a', '#7e57c2'],
-                  hoverBackgroundColor: ['#ffb74d', '#4db6ac', '#9575cd']
-                }
-              ]
-             
-          };
-
-
- var ctx = document.getElementById("totalGrafic");
-  var myBarChart = new Chart(ctx, {
-    type: 'bar',
-    data: dataTot,
-    options: {
-     responsive: true,
-      maintainAspectRatio: true,
-
-    }
-});
-</script>
 
 <script type="text/javascript">
  var dataPrints = {
-              labels: ['Impressas', 'Aguardando impressão'],
+              labels: ['Impressas','Não impressas', 'Aguardando'],
               datasets: [
                 {
-              data :[<?php echo $enviadas ?>, <?php echo $aceitas ?>],
+              data :[<?php echo $Totimpressas ?>, <?php echo $Totnao_impressas ?>, <?php echo $Totaguardando ?>],
                   backgroundColor: ['#ffa726', '#26a69a', '#7e57c2'],
                   hoverBackgroundColor: ['#ffb74d', '#4db6ac', '#9575cd']
                 }
@@ -211,4 +200,14 @@ var dataTot = {
     }
 });
 
+ var ctx = document.getElementById("provasGrafic2");
+  var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: dataPrints,
+    options: {
+     responsive: true,
+      maintainAspectRatio: true,
+
+    }
+});
 </script>

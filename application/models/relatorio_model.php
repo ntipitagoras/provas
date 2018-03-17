@@ -47,7 +47,7 @@ return $this->db->get()->result();
 
 }
 
-function getCurseEnviados($id){
+function getTotalCurseEnviados($id){
 
 $this->db->select('*');
 $this->db->where('id_status',1);
@@ -58,7 +58,7 @@ return count($this->db->get()->result());
 
 }
 
-function getCurseAceitos($id){
+function getTotalCurseAceitos($id){
 
 $this->db->select('*');
 $this->db->where('id_status',2);
@@ -69,11 +69,34 @@ return count($this->db->get()->result());
 
 }
 
-function getCurseRejeitados($id){
-
+function getTotalCurseRejeitados($id){
 $this->db->select('*');
 $this->db->where('id_status',3);
 $this->db->where('id_curso',$id);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+}
+
+function getTotalProvasImpressas(){
+$this->db->select('id_status_impressao');
+$this->db->where('id_status_impressao',4);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+}
+
+function getTotalProvasNaoImpressas(){
+$this->db->select('id_status_impressao');
+$this->db->where('id_status_impressao',5);
+$this->db->from('prova');
+return count($this->db->get()->result());
+
+}
+
+function getTotalProvasAguardando(){
+$this->db->select('id_status_impressao');
+$this->db->where('id_status_impressao',0);
 $this->db->from('prova');
 return count($this->db->get()->result());
 
