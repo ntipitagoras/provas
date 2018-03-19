@@ -1,3 +1,39 @@
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" ><b><i class='fa fa-user'></i></b></h4>
+        </div>
+        <div class="modal-body">
+
+        <h4><strong>Adicionar novo professor</strong></h4>
+
+        <form action="addusuario" method="post">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" name="nome" id="nome" required="Insira o nome">      
+        <label for="cpf">CPF</label>
+        <input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" minlength="11" required="Insira o CPF">
+        <label for="rg">RG</label>
+        <input type="text" class="form-control" name="rg" id="rg">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" name="email" id="email" required="Insira o E-mail">
+        <label for="celular">Celular</label>
+        <input type="text" class="form-control" name="celular" placeholder="somente números Ex.: 99999999999" id="celular" maxlength="11" minlength="11" required="Insira o celular">
+        <label for="senha">Senha</label>
+        <input type="password" class="form-control" name="senha" id="senha" required="Insira uma senha">
+        <br>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <input type="submit" value="Adicionar" class="btn btn-success">
+        </form>
+
+        </div>
+        <div class="modal-footer">
+
+        </div>
+        </div>
+        </div>
+</div>
 
 <div id="page-wrapper">
     <div class="row">
@@ -21,9 +57,12 @@
                   </div>
                   <div class="col-sm-4">
                   <input type="submit" class="btn btn-primary" name="btn_search" value="Procurar"> 
+              </form>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addUser">Adicionar</button>
                   </div>
                 </div>
-            </form>
+            
+            
 <br><br>
 
 
@@ -149,6 +188,7 @@
   </div>
 </div>
 
+      
 
 
 <script language="JavaScript">

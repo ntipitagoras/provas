@@ -43,8 +43,8 @@ $pin_sms .= rand(1,9);//sorteia 1 numero de 0 a 9
 }
 $pin_codificado = $this->encrypt->encode($pin_sms);
 setcookie("token_sms", $pin_codificado, time()+120);
-//echo $pin_sms;
-sendsms($pin_sms, $celular);
+echo $pin_sms;
+//sendsms($pin_sms, $celular);
 }
 
 

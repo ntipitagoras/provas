@@ -29,8 +29,8 @@ class Impressao extends CI_Controller {
 		public function list_prova_id_curso()
 		{
 			$data['cursos']         	= $this->curso->list_curso();
-			$data['documentos']   	= $this->operador->get_documento($this->input->post('id_curso'));
-			$data['provas']         	= $this->impressao->list_prova_id_curso($this->input->post('id_curso'));
+			$data['documentos']   	= $this->operador->get_documento($this->input->get('id_curso'));
+			$data['provas']         	= $this->impressao->list_prova_id_curso($this->input->get('id_curso'));
 
 			$this->load->view('home2_header_view');
 			$this->load->view('impressao_view',$data);
@@ -44,13 +44,13 @@ class Impressao extends CI_Controller {
 			$this->load->model('impressao_model','impressao');
 			$this->load->model('curso_model','curso');
 
+		
+
 			if( $this->impressao->sim($id_prova) ){
 
 				$data['cursos'] = $this->curso->list_curso();
 
-				$this->load->view('home2_header_view');
-				$this->load->view('impressao_view',$data);
-				$this->load->view('home2_footer_view');
+				echo "<script>javascript:window.location = document.referrer;</script>";
 			}
 		}
 
@@ -65,9 +65,8 @@ class Impressao extends CI_Controller {
 			if( $this->impressao->nao($id_prova,$motivo) )
 			{
 				$data['cursos'] = $this->curso->list_curso();
-				$this->load->view('home2_header_view');
-				$this->load->view('impressao_view',$data);
-				$this->load->view('home2_footer_view');
+				
+				echo "<script>javascript:window.location = document.referrer;</script>";
 			}
 		}
 

@@ -11,8 +11,8 @@
 				echo "<h3 class='panel-title'>Provas </h3>";
 			echo "</div>";
 			echo "<div class='panel-body'>";
-
-				echo form_open_multipart('impressao/list_prova_id_curso');
+                $attribute['method'] = 'get';
+				echo form_open('impressao/list_prova_id_curso', $attribute);
 
 				//INICIO DO FORMULARIO DE PESQUISA
 				$atributos = array(
@@ -230,7 +230,7 @@
 					//STATUS IMPRESSÃO
                     if( $prova->id_status_impressao == 0)
 					{
-						echo "<td align='center'><h6><button type=button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#basicModalN".$prova->id."'>Não</button><button type=button class='btn btn-success btn-sm' data-toggle='modal' data-target='#basicModalS".$prova->id."'>Sim</button></h6></td>";
+						echo "<td align='center'><h6><button type=button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#basicModalN".$prova->id."'>Não</button><button type=button class='btn btn-success btn-sm' data-toggle='modal' data-target='#basicModalS".$prova->id."'> Sim </button></h6></td>";
 					}
 					if ($prova->id_status_impressao == 4) {
 						echo "<td align='center'><span class='label label-success'>SIM</span></td>";
@@ -281,4 +281,5 @@
 
 		return true;
 	}
-	</script>
+
+</script>

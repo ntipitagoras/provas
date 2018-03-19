@@ -38,6 +38,24 @@ class Usuarios extends CI_Controller {
 
 
 		}
+		public function addusuario(){
+        
+        $dados = array(
+        'nome' => strtoupper($this->input->post('nome')),
+        'cpf'  => $this->input->post('cpf'),
+        'rg'   => $this->input->post('rg'),
+        'email'=> $this->input->post('email'),
+        'celular'=> $this->input->post('celular'),
+        'senha' => $this->encrypt->encode($this->input->post('senha')),
+        'nivel_professor' => 1
+        );
+        
+        $adicionar = $this->usuario->addDados($dados);
+        $this->session->set_flashdata('msg', "Usuário adicionado");
+       	redirect(base_url('/usuarios'));
+
+
+		}
 
 		
 		public function atualizaDados(){
